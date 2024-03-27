@@ -65,4 +65,20 @@ public class LogAnalyzer
     {
         reader.printData();
     }
+    
+    /**
+     * Calculates the total number of accesses recorded in the log file.
+     * This method totals up the number of accesses for each hour stored in the 
+     * hourCounts, which the data is filled by a call to the analyzeHourlyData method.
+     *
+     * @return The total number of accesses in the log file.
+     */
+    public int numberOfAccesses()
+    {
+        int total = 0;
+        for(int hour = 0; hour < hourCounts.length; hour++) {
+            total += hourCounts[hour];
+        }
+        return total;
+    }
 }
