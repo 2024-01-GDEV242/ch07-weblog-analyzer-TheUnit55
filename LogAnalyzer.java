@@ -122,4 +122,28 @@ public class LogAnalyzer
         }
         return quietestHour;
     }
+    
+    /**
+     * Finds the start hour of the busiest two-hour period in the log file.
+     * This method totals the number of accesses for each two-hour period
+     * and finds which period has the highest total number of accesses.
+     *
+     * @return The start hour of the busiest two-hour period.
+     */
+    public int busiestTwoHour()
+    {
+        int busiestPeriod = 0;
+        int busiestCount = 0;
+
+        for(int hour = 0; hour < hourCounts.length - 1; hour++) 
+        {
+            int periodCount = hourCounts[hour] + hourCounts[hour+1];
+            if(periodCount > busiestCount) 
+            {
+                busiestPeriod = hour;
+                busiestCount = periodCount;
+            }
+        }
+        return busiestPeriod;
+    }
 }
