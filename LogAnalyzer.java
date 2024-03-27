@@ -81,4 +81,24 @@ public class LogAnalyzer
         }
         return total;
     }
+    
+    /**
+     * Finds the busiest hour in hourCounts array.
+     * The hour with the highest number of accesses.
+     * 
+     * @return The index of the busiest hour
+     */
+    public int busiestHour()
+    {
+        int busiestHourIndex = 0;
+        int allAccesses = hourCounts[0];
+
+        for(int hour = 1; hour < hourCounts.length; hour++) {
+            if(hourCounts[hour] > allAccesses) {
+                busiestHourIndex = hour;
+                allAccesses = hourCounts[hour];
+            }
+        }
+        return busiestHourIndex;
+    }
 }
