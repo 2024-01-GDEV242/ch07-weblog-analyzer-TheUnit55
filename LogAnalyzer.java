@@ -8,6 +8,8 @@ public class LogAnalyzer
 {
     // Where to calculate the hourly access counts.
     private int[] hourCounts;
+    private int[] dayCounts;
+    private int[] monthCounts;
     // Use a LogfileReader to access the data.
     private LogfileReader reader;
 
@@ -19,6 +21,8 @@ public class LogAnalyzer
         // Create the array object to hold the hourly
         // access counts.
         hourCounts = new int[24];
+        dayCounts = new int[28];
+        monthCounts = new int[12];
         // Create the reader to obtain the data.
         reader = new LogfileReader("demo.log");
     }
@@ -38,10 +42,43 @@ public class LogAnalyzer
      */
     public void analyzeHourlyData()
     {
+        reader.reset();
         while(reader.hasNext()) {
             LogEntry entry = reader.next();
             int hour = entry.getHour();
             hourCounts[hour]++;
+        }
+    }
+
+    /**
+     * Analyze the daily access data from the log file
+     */
+    public void analyzeDailyData() {
+        reader.reset();
+        while (reader.hasNext()) {
+            LogEntry entry = reader.next();
+            if (entry != null) {
+                int day = entry.getDay() - 1; 
+                if (day >= 0 && day < dayCounts.length) {
+                    dayCounts[day]++;
+                }
+            }
+        }
+    }
+    
+    /**
+     * Analyze the monthly access data from the log file
+     */
+    public void analyzeMonthlyData() {
+        reader.reset();
+        while (reader.hasNext()) {
+            LogEntry entry = reader.next();
+            if (entry != null) {
+            int month = entry.getMonth() - 1;
+            if (month >= 0 && month < monthCounts.length) {
+                monthCounts[month]++;
+                }
+            }
         }
     }
 
@@ -145,5 +182,110 @@ public class LogAnalyzer
             }
         }
         return busiestPeriod;
+    }
+    
+    /**
+     * Finds the day with the least number of accesses in the log file.
+     * This method iterates through the dayCounts array to find the day with the 
+     * least amount of access count.
+     * 
+     * @return The index of the quietest day
+     */
+    public int quietestDay() {
+        int quietestDay = 0;
+
+        for(int day = 0; day < dayCounts.length; day++) {
+            if(dayCounts[day] < dayCounts[quietestDay]) {
+                quietestDay = day;
+            }
+        }
+        return quietestDay;
+    }
+
+    /**
+     * Finds the day with the highest number of accesses in the log file.
+     * This method iterates through the dayCounts array to find the day with the 
+     * most amount of access count.
+     * 
+     * @return The index of the busiest day
+     */
+    public int busiestDay() {
+        int busiestDay = 0;
+
+        for(int day = 0; day < dayCounts.length; day++) {
+            if(dayCounts[day] > dayCounts[busiestDay]) {
+                busiestDay = day;
+            }
+        }
+        return busiestDay;
+    }
+
+    /**
+     * Totals the total number of accesses for all months in the log file.
+     * This method totals up the number of accesses for each month stored in the 
+     * monthCounts array.
+     * 
+     * @return The total number of accesses for all months
+     */
+    public int totalAccessesPerMonth() {
+        int totalAccesses = 0;
+
+        for(int monthCount : monthCounts) {
+            totalAccesses += monthCount;
+        }
+        return totalAccesses;
+    }
+
+    /**
+     * Finds the month with the fewest number of accesses in the log file.
+     * This method iterates through the monthCounts array to find the month with the 
+     * least amount of access count.
+     * 
+     * @return The index of the quietest month
+     */
+    public int quietestMonth() {
+        int quietestMonth = 0;
+
+        for(int month = 0; month < monthCounts.length; month++) {
+            if(monthCounts[month] < monthCounts[quietestMonth]) {
+                quietestMonth = month;
+            }
+        }
+        return quietestMonth;
+    }
+
+    /**
+     * Finds the month with the highest number of accesses in the log file.
+     * This method iterates through the monthCounts array to find the month with the 
+     * highest access count.
+     * 
+     * @return The index of the busiest month
+     */
+    public int busiestMonth() {
+        int busiestMonth = 0;
+
+        for(int month = 0; month < monthCounts.length; month++) {
+            if(monthCounts[month] > monthCounts[busiestMonth]) {
+                busiestMonth = month;
+            }
+        }
+        return busiestMonth;
+    }
+
+    /**
+     * Totals the average number of accesses per month.
+     * This method first totals all the accesses across months stored in the monthCounts 
+     * array and then divides by the number of months to find the average.
+     * 
+     * @return The average number of accesses per month
+     */
+    public int averageAccessesPerMonth() {
+        int totalAverage = 0;
+
+        for(int monthCount : monthCounts) {
+            totalAverage += monthCount;
+        }
+        int average = totalAverage / monthCounts.length;
+        return average;
     }
 }
