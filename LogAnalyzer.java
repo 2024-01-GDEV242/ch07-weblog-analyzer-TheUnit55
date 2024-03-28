@@ -1,5 +1,7 @@
 /**
- * Read web server data and analyse hourly access patterns.
+ * Analyzes web server log data to find access patterns across hourly, daily, and monthly
+ * intervals. Uses a LogfileReader to process log files, calculates for busiest and 
+ * quietest hours, days, months, total monthly accesses, and average monthly accesses.
  * 
  * @author Juan Jimenez
  * @version 2024-03-25
